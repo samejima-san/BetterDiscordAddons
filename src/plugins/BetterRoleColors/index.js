@@ -18,6 +18,7 @@ module.exports = (Plugin, Api) => {
     return class BetterRoleColors extends Plugin {
 
         onStart() {
+            BdApi.UI.showConfirmationModal("Plugin Discontinued", "This plugin has been discontinued to allow me to focus on working on improving BetterDiscord itself.\n\nI would recommend [downloading the replacement called MoreRoleColors](https://betterdiscord.app/plugin/MoreRoleColors) and deleting this plugin!");
             Utilities.suppressErrors(this.patchAccountDetails.bind(this), "account details patch")();
             Utilities.suppressErrors(this.patchVoiceUsers.bind(this), "voice users patch")();
             Utilities.suppressErrors(this.patchMessageContent.bind(this), "message content patch")();
@@ -99,7 +100,7 @@ module.exports = (Plugin, Api) => {
             if (!addedNodes?.length) return;
             const element = addedNodes[0];
             if (element.nodeType !== 1) return;
-            // if (!element.matches) console.log("bad", element);
+            
             this.colorMentions(element);
             this.colorNameTags(element);
             this.colorHeaders(element);

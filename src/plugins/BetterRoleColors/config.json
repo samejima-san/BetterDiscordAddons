@@ -1,29 +1,17 @@
 {
     "name": "BetterRoleColors",
     "author": "Zerebos",
-    "version": "0.10.3",
-    "description": "Adds server-based role colors to typing, voice, popouts, modals and more!",
+    "version": "0.10.4",
+    "description": "Discontinued, please use MoreRoleColors (https://betterdiscord.app/plugin/MoreRoleColors) instead!",
     "github": "https://github.com/zerebos/BetterDiscordAddons/tree/master/Plugins/BetterRoleColors",
     "github_raw": "https://raw.githubusercontent.com/zerebos/BetterDiscordAddons/master/Plugins/BetterRoleColors/BetterRoleColors.plugin.js",
     "changelog": [
         {
-            "title": "Improvements!",
-            "type": "improved",
-            "items": [
-                "Support was added for the new style bot/app tags, they should be colored the same as the bot.",
-                "Settings were simplified for the new username style system with no discriminators.",
-                "Simplified coloring techniques to hopefully make this update work longer."
-            ]
-        },
-        {
-            "title": "Finally Fixed!",
+            "title": "Plugin Discontinued",
             "type": "fixed",
             "items": [
-                "Fixed coloring voice users.",
-                "Fixed coloring audit log.",
-                "Fixed coloring members group.",
-                "Fixed coloring account container.",
-                "Fixed coloring popouts and modals."
+                "This plugin has been discontinued, please use the plugin MoreRoleColors (https://betterdiscord.app/plugin/MoreRoleColors).",
+                "It was a difficult decision, but doing this allows me to focus my already limited time onto BetterDiscord itself."
             ]
         }
     ],

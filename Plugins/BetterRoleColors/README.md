@@ -1,4 +1,4 @@
-# BetterRoleColors - [Download](https://betterdiscord.app/Download?id=2)
+# Discontinued use [MoreRoleColors](https://betterdiscord.app/plugin/MoreRoleColors)
 
 Adds server-based role colors to typing, voice, popouts, modals and more!
 

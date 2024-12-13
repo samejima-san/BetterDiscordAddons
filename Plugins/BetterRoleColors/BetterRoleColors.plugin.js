@@ -1,7 +1,7 @@
 /**
  * @name BetterRoleColors
- * @description Adds server-based role colors to typing, voice, popouts, modals and more!
- * @version 0.10.3
+ * @description Discontinued, please use MoreRoleColors (https://betterdiscord.app/plugin/MoreRoleColors) instead!
+ * @version 0.10.4
  * @author Zerebos
  * @website https://github.com/zerebos/BetterDiscordAddons/tree/master/Plugins/BetterRoleColors
  * @source https://raw.githubusercontent.com/zerebos/BetterDiscordAddons/master/Plugins/BetterRoleColors/BetterRoleColors.plugin.js
@@ -32,29 +32,17 @@
 const config = {
     name: "BetterRoleColors",
     author: "Zerebos",
-    version: "0.10.3",
-    description: "Adds server-based role colors to typing, voice, popouts, modals and more!",
+    version: "0.10.4",
+    description: "Discontinued, please use MoreRoleColors (https://betterdiscord.app/plugin/MoreRoleColors) instead!",
     github: "https://github.com/zerebos/BetterDiscordAddons/tree/master/Plugins/BetterRoleColors",
     github_raw: "https://raw.githubusercontent.com/zerebos/BetterDiscordAddons/master/Plugins/BetterRoleColors/BetterRoleColors.plugin.js",
     changelog: [
         {
-            title: "Improvements!",
-            type: "improved",
-            items: [
-                "Support was added for the new style bot/app tags, they should be colored the same as the bot.",
-                "Settings were simplified for the new username style system with no discriminators.",
-                "Simplified coloring techniques to hopefully make this update work longer."
-            ]
-        },
-        {
-            title: "Finally Fixed!",
+            title: "Plugin Discontinued",
             type: "fixed",
             items: [
-                "Fixed coloring voice users.",
-                "Fixed coloring audit log.",
-                "Fixed coloring members group.",
-                "Fixed coloring account container.",
-                "Fixed coloring popouts and modals."
+                "This plugin has been discontinued, please use the plugin MoreRoleColors (https://betterdiscord.app/plugin/MoreRoleColors).",
+                "It was a difficult decision, but doing this allows me to focus my already limited time onto BetterDiscord itself."
             ]
         }
     ],
@@ -258,6 +246,7 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
     return class BetterRoleColors extends Plugin {
 
         onStart() {
+            BdApi.UI.showConfirmationModal("Plugin Discontinued", "This plugin has been discontinued to allow me to focus on working on improving BetterDiscord itself.\n\nI would recommend [downloading the replacement called MoreRoleColors](https://betterdiscord.app/plugin/MoreRoleColors) and deleting this plugin!");
             Utilities.suppressErrors(this.patchAccountDetails.bind(this), "account details patch")();
             Utilities.suppressErrors(this.patchVoiceUsers.bind(this), "voice users patch")();
             Utilities.suppressErrors(this.patchMessageContent.bind(this), "message content patch")();
@@ -339,7 +328,7 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
             if (!addedNodes?.length) return;
             const element = addedNodes[0];
             if (element.nodeType !== 1) return;
-            // if (!element.matches) console.log("bad", element);
+            
             this.colorMentions(element);
             this.colorNameTags(element);
             this.colorHeaders(element);
