@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "resolveJsonModule": true,
+        "strictNullChecks": true,
+        "target": "ESNext",
+        "moduleResolution": "bundler",
+        "rootDir": "."
+    },
+    "include": ["src/*", "src/**/*"]
+}

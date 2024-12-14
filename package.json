@@ -2,29 +2,26 @@
   "name": "betterdiscordaddons",
   "version": "1.0.0",
   "description": "Addons for BetterDiscord.",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/zerebos/BetterDiscordAddons"
   },
   "scripts": {
-    "build": "zpl build",
-    "init": "zpl init"
+    "build": "esrun scripts/build.ts"
   },
   "author": "Zerebos",
   "license": "MIT",
-  "eslintIgnore": [
-    "scripts/template.js"
-  ],
-  "buildConfig": {
-    "pluginsFolder": "./src/plugins",
-    "releaseFolder": "./Plugins",
-    "copyToBD": true,
-    "addInstallScript": true,
-    "github": "https://github.com/zerebos/BetterDiscordAddons/tree/master/Plugins/`{{PLUGIN_NAME}}`",
-    "githubRaw": "https://raw.githubusercontent.com/zerebos/BetterDiscordAddons/master/Plugins/`{{PLUGIN_NAME}}`/`{{PLUGIN_NAME}}`.plugin.js",
-    "authorLink": "https://twitter.com/IAmZerebos"
-  },
   "devDependencies": {
-    "zerespluginlibrary": "^2.0.6"
+    "@digitak/esrun": "^3.2.26",
+    "@eslint/js": "^9.17.0",
+    "@types/eslint": "^9.6.1",
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.0.1",
+    "esbuild": "^0.24.0",
+    "eslint": "^9.17.0",
+    "globals": "^15.13.0",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.18.0"
   }
 }
