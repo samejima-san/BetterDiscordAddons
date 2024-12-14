@@ -104,7 +104,7 @@ export default class Plugin {
         return BdApi.Utils.extend({}, BdApi.Data.load(this.meta.name, "settings"), this.defaultSettings ?? {}) as Settings;
     }
 
-    buildSettingsPanel(onChange: (groupId: string, settingId: string, value: unknown) => void): ReactElement {
+    buildSettingsPanel(onChange?: (groupId: string, settingId: string, value: unknown) => void): ReactElement {
         return BdApi.UI.buildSettingsPanel({
             onChange: (groupId: string, id: string, value: unknown) => {
                 this.settings[id] = value;

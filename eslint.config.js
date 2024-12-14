@@ -11,7 +11,8 @@ export default [
             globals: {
                 ...globals.browser,
                 ...globals.node,
-                BdApi: false
+                BdApi: false,
+                DiscordNative: false
             }
         }
     },

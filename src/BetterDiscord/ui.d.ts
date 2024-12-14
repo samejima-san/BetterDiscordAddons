@@ -11,7 +11,7 @@ interface SettingItem<T> {
     note: string;
     value: T;
     children?: ReactElement[];
-    onChange(value: T): void;
+    onChange?(value: T): void;
     disabled?: boolean;
     inline?: boolean;
 }
@@ -104,7 +104,15 @@ export interface PanelOptions {
     settings: SettingsPanelDefinition;
 }
 
+export interface ToastOptions {
+    type?: "" | "info" | "success" | "danger" | "error" | "warning" | "warn";
+    icon?: boolean;
+    timeout?: number;
+    forceShow?: boolean;
+}
+
 export interface UI {
     showChangelogModal(options: Partial<Changelog>): void;
     buildSettingsPanel(options: Partial<PanelOptions>): ReactElement;
+    showToast(content: string, options?: ToastOptions): void;
 }

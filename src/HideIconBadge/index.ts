@@ -1,6 +1,6 @@
 import Plugin from "../base";
 import {Meta} from "../BetterDiscord/meta";
-import Config from "./config.js";
+import Config from "./config";
 
 
 interface IElectronModule {

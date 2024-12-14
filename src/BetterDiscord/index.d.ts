@@ -1,4 +1,6 @@
+import {ContextMenu} from "./contextmenu";
 import {Data} from "./data";
+import {DOM} from "./dom";
 import {Logger} from "./logger";
 import {Patcher} from "./patcher";
 import {UI} from "./ui";
@@ -14,5 +16,7 @@ export interface BetterDiscordAPI {
     Utils: Utils;
     UI: UI;
     Patcher: Patcher;
+    ContextMenu: ContextMenu;
+    DOM: DOM;
 }
 
