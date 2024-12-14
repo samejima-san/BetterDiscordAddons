@@ -2,6 +2,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
+import crypto from "node:crypto";
 import * as esbuild from "esbuild";
 import install from "./install";
 
@@ -21,7 +22,6 @@ const projectRoot = path.dirname(process.env.npm_package_json ?? "..");
 const pluginsPath = path.join(projectRoot, "src");
 const releasePath = path.join(projectRoot, "Plugins", pluginName);
 const releaseFile = path.join(releasePath, `${pluginName}.plugin.js`);
-const configTempFile = path.join(releasePath, `config.js`);
 if (!fs.existsSync(pluginsPath)) fs.mkdirSync(pluginsPath, {recursive: true});
 if (!fs.existsSync(releasePath)) fs.mkdirSync(releasePath, {recursive: true});
 
@@ -30,6 +30,44 @@ const pluginFolder = path.join(pluginsPath, pluginName);
 const configPath = path.join(pluginsPath, pluginName, "config.ts");
 const pluginFolderExists = fs.existsSync(pluginFolder);
 const configExists = fs.existsSync(configPath);
+
+
+// Copies to BD folder after every build and updates the meta
+const copyToBDPlugin: esbuild.Plugin = {
+    name: "CopyToBD",
+    async setup(build: esbuild.PluginBuild) {
+        build.onEnd(async result => {
+            if (result.errors.length || !result.metafile) return;
+
+            // Add the banner and install script
+            const config = await buildConfig();
+            const banner = buildMeta(config) + "\n" + install + "\n";
+            const output = fs.readFileSync(releaseFile).toString();
+            const newFileContent = banner + output + "\n/*@end@*/";
+            fs.writeFileSync(releaseFile, newFileContent);
+            
+            fs.writeFileSync(path.join(bdFolder, "plugins", `${pluginName}.plugin.js`), fs.readFileSync(releaseFile));
+        });
+
+
+    }
+};
+
+async function buildConfig() {
+    // Forcibly use UUID to make sure there's no import caching issues
+    const configTempFile = path.join(releasePath, `${crypto.randomUUID()}.config.js`);
+
+    // Temporarily build the config
+    await esbuild.build({
+        entryPoints: [configPath],
+        outfile: configTempFile,
+    });
+
+    // Import in the result and remove the temp file
+    const config = (await import("file://" + configTempFile)).default;
+    fs.rmSync(configTempFile);
+    return config;
+}
 
 async function buildPlugin() {
     console.log("");
@@ -41,15 +79,9 @@ async function buildPlugin() {
         process.exit(1);
     }
 
-    // Temporarily build the config
-    await esbuild.build({
-        entryPoints: [configPath],
-        outfile: configTempFile,
-    });
-
-    const config = (await import("file://" + configTempFile)).default;
+    // TODO: maybe just remove `main` and have all of them use index.ts
+    const config = await buildConfig();
     const mainFilePath = path.join(pluginFolder, config.main);
-    fs.rmSync(configTempFile);
 
     if (!fs.existsSync(mainFilePath)) {
         console.error(`Could not build plugin ${pluginName}. Main file (${config.main}) not found.`);
@@ -60,19 +92,16 @@ async function buildPlugin() {
         entryPoints: [mainFilePath],
         outfile: releaseFile,
         bundle: true,
-        banner: {js: buildMeta(config) + "\n" + install},
-        footer: {js: "\n/*@end@*/"},
         format: "cjs",
         target: ["chrome128"],
         loader: {".css": "text", ".html": "text"},
         logLevel: "info",
         metafile: true,
-        minify: false
+        minify: false,
+        plugins: [copyToBDPlugin]
     });
 
     await ctx.rebuild();
-
-    fs.writeFileSync(path.join(bdFolder, "plugins", `${pluginName}.plugin.js`), fs.readFileSync(releaseFile));
 
     console.log(`${pluginName} built successfully`);
     console.log(`${pluginName} saved as ${releaseFile}`);
