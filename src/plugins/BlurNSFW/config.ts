@@ -9,7 +9,7 @@ const manifest: Manifest = {
             github_username: "zerebos",
             twitter_username: "IAmZerebos"
         }],
-        version: "1.0.4",
+        version: "1.0.5",
         description: "Blurs images and videos until you hover over them.",
         github: "https://github.com/zerebos/BetterDiscordAddons/tree/master/Plugins/BlurNSFW",
         github_raw: "https://raw.githubusercontent.com/zerebos/BetterDiscordAddons/master/Plugins/BlurNSFW/BlurNSFW.plugin.js"
@@ -26,6 +26,7 @@ const manifest: Manifest = {
             title: "Bug Fixes & Info",
             type: "fixed",
             items: [
+                "The settings panel will now reflect your actual settings.",
                 "Media should be blurred properly once again!",
                 "If things aren't blurred properly for you, it might be due to an experiment Discord is doing.",
                 "Once the experiment is more widely rolled out, I will add compatibility for it in this plugin."

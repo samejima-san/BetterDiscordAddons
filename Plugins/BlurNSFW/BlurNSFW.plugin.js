@@ -1,7 +1,7 @@
 /**
  * @name BlurNSFW
  * @description Blurs images and videos until you hover over them.
- * @version 1.0.4
+ * @version 1.0.5
  * @author Zerebos
  * @authorId 249746236008169473
  * @website https://github.com/zerebos/BetterDiscordAddons/tree/master/Plugins/BlurNSFW
@@ -60,14 +60,14 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 ));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-// src/BlurNSFW/index.ts
+// src/plugins/BlurNSFW/index.ts
 var BlurNSFW_exports = {};
 __export(BlurNSFW_exports, {
   default: () => BlurMedia
 });
 module.exports = __toCommonJS(BlurNSFW_exports);
 
-// src/base.ts
+// src/common/plugin.ts
 var Plugin = class {
   meta;
   manifest;
@@ -105,8 +105,9 @@ var Plugin = class {
       BdApi.Data.save(this.meta.name, "version", this.meta.version);
     }
     if (this.manifest.strings) this.LocaleManager = BdApi.Webpack.getModule((m) => m?.Messages && Object.keys(m?.Messages).length > 0);
-    if (this.manifest.config) {
+    if (this.manifest.config && !this.getSettingsPanel) {
       this.getSettingsPanel = () => {
+        this.#updateConfig();
         return BdApi.UI.buildSettingsPanel({
           onChange: (_, id, value) => {
             this.settings[id] = value;
@@ -141,9 +142,22 @@ var Plugin = class {
     BdApi.Data.save(this.meta.name, "settings", this.settings);
   }
   loadSettings() {
-    return BdApi.Utils.extend({}, BdApi.Data.load(this.meta.name, "settings"), this.defaultSettings ?? {});
+    return BdApi.Utils.extend({}, this.defaultSettings ?? {}, BdApi.Data.load(this.meta.name, "settings"));
+  }
+  #updateConfig() {
+    if (!this.manifest.config) return;
+    for (const setting of this.manifest.config) {
+      if (setting.type !== "category") {
+        setting.value = this.settings[setting.id] ?? setting.value;
+      } else {
+        for (const subsetting of setting.settings) {
+          subsetting.value = this.settings[subsetting.id] ?? subsetting.value;
+        }
+      }
+    }
   }
   buildSettingsPanel(onChange) {
+    this.#updateConfig();
     return BdApi.UI.buildSettingsPanel({
       onChange: (groupId, id, value) => {
         this.settings[id] = value;
@@ -155,7 +169,18 @@ var Plugin = class {
   }
 };
 
-// src/BlurNSFW/config.ts
+// src/common/formatstring.ts
+function formatString(stringToFormat, values) {
+  for (const val in values) {
+    let replacement = values[val];
+    if (Array.isArray(replacement)) replacement = JSON.stringify(replacement);
+    if (typeof replacement === "object" && replacement !== null) replacement = replacement.toString();
+    stringToFormat = stringToFormat.replace(new RegExp(`{{${val}}}`, "g"), replacement.toString());
+  }
+  return stringToFormat;
+}
+
+// src/plugins/BlurNSFW/config.ts
 var manifest = {
   info: {
     name: "BlurNSFW",
@@ -165,7 +190,7 @@ var manifest = {
       github_username: "zerebos",
       twitter_username: "IAmZerebos"
     }],
-    version: "1.0.4",
+    version: "1.0.5",
     description: "Blurs images and videos until you hover over them.",
     github: "https://github.com/zerebos/BetterDiscordAddons/tree/master/Plugins/BlurNSFW",
     github_raw: "https://raw.githubusercontent.com/zerebos/BetterDiscordAddons/master/Plugins/BlurNSFW/BlurNSFW.plugin.js"
@@ -182,6 +207,7 @@ var manifest = {
       title: "Bug Fixes & Info",
       type: "fixed",
       items: [
+        "The settings panel will now reflect your actual settings.",
         "Media should be blurred properly once again!",
         "If things aren't blurred properly for you, it might be due to an experiment Discord is doing.",
         "Once the experiment is more widely rolled out, I will add compatibility for it in this plugin."
@@ -228,21 +254,8 @@ var manifest = {
 };
 var config_default = manifest;
 
-// src/BlurNSFW/index.ts
+// src/plugins/BlurNSFW/index.ts
 var import_events = __toESM(require("events"), 1);
-
-// src/common/formatstring.ts
-function formatString(stringToFormat, values) {
-  for (const val in values) {
-    let replacement = values[val];
-    if (Array.isArray(replacement)) replacement = JSON.stringify(replacement);
-    if (typeof replacement === "object" && replacement !== null) replacement = replacement.toString();
-    stringToFormat = stringToFormat.replace(new RegExp(`{{${val}}}`, "g"), replacement.toString());
-  }
-  return stringToFormat;
-}
-
-// src/BlurNSFW/index.ts
 var { ContextMenu, DOM, Webpack, Patcher } = BdApi;
 var SelectedChannelStore = Webpack.getModule((m) => m.getCurrentlySelectedChannelId);
 var ChannelStore = Webpack.getModule((m) => m.getDMFromUserId);

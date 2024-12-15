@@ -60,8 +60,9 @@ export default class Plugin {
         if (this.manifest.strings) this.LocaleManager = BdApi.Webpack.getModule(m => m?.Messages && Object.keys(m?.Messages).length > 0);
 
         // Automatically build settings panel if config found
-        if (this.manifest.config) {
+        if (this.manifest.config && !this.getSettingsPanel) {
             this.getSettingsPanel = () => {
+                this.#updateConfig();
                 return BdApi.UI.buildSettingsPanel({
                     onChange: (_: string, id: string, value: unknown) => {
                         this.settings[id] = value;
@@ -101,10 +102,27 @@ export default class Plugin {
     }
 
     loadSettings() {
-        return BdApi.Utils.extend({}, BdApi.Data.load(this.meta.name, "settings"), this.defaultSettings ?? {}) as Settings;
+        return BdApi.Utils.extend({}, this.defaultSettings ?? {}, BdApi.Data.load(this.meta.name, "settings")) as Settings;
+    }
+
+    #updateConfig() {
+        if (!this.manifest.config) return;
+
+        for (const setting of this.manifest.config) {
+            if (setting.type !== "category") {
+                setting.value = this.settings[setting.id] ?? setting.value;
+            }
+            else {
+                for (const subsetting of setting.settings) {
+                    subsetting.value = this.settings[subsetting.id] ?? subsetting.value;
+                }
+            }
+        }
     }
 
     buildSettingsPanel(onChange?: (groupId: string, settingId: string, value: unknown) => void): ReactElement {
+        this.#updateConfig();
+
         return BdApi.UI.buildSettingsPanel({
             onChange: (groupId: string, id: string, value: unknown) => {
                 this.settings[id] = value;

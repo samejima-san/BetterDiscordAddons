@@ -1,4 +1,4 @@
-import {SyntheticEvent} from "react";
+import {ReactElement, SyntheticEvent} from "react";
 
 import {Meta} from "@betterdiscord/meta";
 
@@ -71,7 +71,7 @@ export default class RoleMembers extends Plugin {
     }
 
     patchGuildContextMenu() {
-        this.contextMenuPatch = ContextMenu.patch("guild-context", (retVal, props) => {
+        this.contextMenuPatch = ContextMenu.patch("guild-context", (retVal: ReactElement<{children?: ReactElement<{label?: string}>[]}>, props) => {
             const guild = props.guild;
             const guildId = guild.id;
             const roles = getRoles(guild);
@@ -108,7 +108,7 @@ export default class RoleMembers extends Plugin {
                                         bottom: e.pageY,
                                         left: e.pageX,
                                         right: e.pageX
-                                    };
+                                    } as DOMRect;
                                 }
                             }, guildId, role.id);
                         }
@@ -117,17 +117,17 @@ export default class RoleMembers extends Plugin {
                 roleItems.push(item);
             }
 
-            const newOne = ContextMenu.buildItem({type: "submenu", label: "Role Members", children: roleItems});
+            const newOne = ContextMenu.buildItem({type: "submenu", label: "Role Members", children: roleItems}) as ReactElement<{type: string, label: string, children: ReactElement[]}>;
 
             const separatorIndex = retVal.props?.children?.findIndex(k => !k?.props?.label);
-            const insertIndex = separatorIndex > 0 ? separatorIndex + 1 : 1;
+            const insertIndex = separatorIndex && separatorIndex > 0 ? separatorIndex + 1 : 1;
             retVal.props?.children?.splice(insertIndex, 0, newOne);
             // return original;
 
         });
     }
 
-    showRolePopout(target: HTMLElement, guildId: string, roleId: string) {
+    showRolePopout(target: HTMLElement | {getBoundingClientRect(): DOMRect}, guildId: string, roleId: string) {
         const roles = getRoles({id: guildId});
         if (!roles) return;
         const role = roles[roleId];
@@ -162,7 +162,7 @@ export default class RoleMembers extends Plugin {
         searchInput.focus();
     }
 
-    showPopout(popout: HTMLElement, relativeTarget: HTMLElement) {
+    showPopout(popout: HTMLElement, relativeTarget: HTMLElement | {getBoundingClientRect(): DOMRect}) {
         if (this.listener) this.listener(null); // Close any previous popouts
         
         document.querySelector(`[class*="app_"] ~ .${LayerClasses?.layerContainer ?? "layerContainer_cd0de5"}`)?.append(popout);
@@ -211,10 +211,4 @@ export default class RoleMembers extends Plugin {
         };
         setTimeout(() => document.addEventListener("click", this.listener!), 500);
     }
-
-
-    getSettingsPanel() {
-        return this.buildSettingsPanel();
-    }
-
 };

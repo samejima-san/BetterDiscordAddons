@@ -1,7 +1,7 @@
 /**
  * @name RoleMembers
  * @description Allows you to see the members of each role on a server.
- * @version 0.1.23
+ * @version 0.1.24
  * @author Zerebos
  * @authorId 249746236008169473
  * @website https://github.com/zerebos/BetterDiscordAddons/tree/master/Plugins/RoleMembers
@@ -50,14 +50,14 @@ var __copyProps = (to, from2, except, desc) => {
 };
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-// src/RoleMembers/index.ts
+// src/plugins/RoleMembers/index.ts
 var RoleMembers_exports = {};
 __export(RoleMembers_exports, {
   default: () => RoleMembers
 });
 module.exports = __toCommonJS(RoleMembers_exports);
 
-// src/base.ts
+// src/common/plugin.ts
 var Plugin = class {
   meta;
   manifest;
@@ -95,8 +95,9 @@ var Plugin = class {
       BdApi.Data.save(this.meta.name, "version", this.meta.version);
     }
     if (this.manifest.strings) this.LocaleManager = BdApi.Webpack.getModule((m) => m?.Messages && Object.keys(m?.Messages).length > 0);
-    if (this.manifest.config) {
+    if (this.manifest.config && !this.getSettingsPanel) {
       this.getSettingsPanel = () => {
+        this.#updateConfig();
         return BdApi.UI.buildSettingsPanel({
           onChange: (_, id, value) => {
             this.settings[id] = value;
@@ -131,9 +132,22 @@ var Plugin = class {
     BdApi.Data.save(this.meta.name, "settings", this.settings);
   }
   loadSettings() {
-    return BdApi.Utils.extend({}, BdApi.Data.load(this.meta.name, "settings"), this.defaultSettings ?? {});
+    return BdApi.Utils.extend({}, this.defaultSettings ?? {}, BdApi.Data.load(this.meta.name, "settings"));
+  }
+  #updateConfig() {
+    if (!this.manifest.config) return;
+    for (const setting of this.manifest.config) {
+      if (setting.type !== "category") {
+        setting.value = this.settings[setting.id] ?? setting.value;
+      } else {
+        for (const subsetting of setting.settings) {
+          subsetting.value = this.settings[subsetting.id] ?? subsetting.value;
+        }
+      }
+    }
   }
   buildSettingsPanel(onChange) {
+    this.#updateConfig();
     return BdApi.UI.buildSettingsPanel({
       onChange: (groupId, id, value) => {
         this.settings[id] = value;
@@ -145,7 +159,18 @@ var Plugin = class {
   }
 };
 
-// src/RoleMembers/config.ts
+// src/common/formatstring.ts
+function formatString(stringToFormat, values) {
+  for (const val in values) {
+    let replacement = values[val];
+    if (Array.isArray(replacement)) replacement = JSON.stringify(replacement);
+    if (typeof replacement === "object" && replacement !== null) replacement = replacement.toString();
+    stringToFormat = stringToFormat.replace(new RegExp(`{{${val}}}`, "g"), replacement.toString());
+  }
+  return stringToFormat;
+}
+
+// src/plugins/RoleMembers/config.ts
 var manifest = {
   info: {
     name: "RoleMembers",
@@ -155,13 +180,13 @@ var manifest = {
       github_username: "zerebos",
       twitter_username: "IAmZerebos"
     }],
-    version: "0.1.23",
+    version: "0.1.24",
     description: "Allows you to see the members of each role on a server.",
     github: "https://github.com/zerebos/BetterDiscordAddons/tree/master/Plugins/RoleMembers",
     github_raw: "https://raw.githubusercontent.com/zerebos/BetterDiscordAddons/master/Plugins/RoleMembers/RoleMembers.plugin.js"
   },
   changelog: [
-    { title: "Small Update!", type: "added", items: ["No longer dependent on ZeresPluginLibrary!", "Context menu should work again!"] }
+    { title: "Hot Fix", type: "fixed", items: ["The settings panel will now reflect your actual settings!"] }
   ],
   config: [
     {
@@ -176,24 +201,13 @@ var manifest = {
 };
 var config_default = manifest;
 
-// src/common/formatstring.ts
-function formatString(stringToFormat, values) {
-  for (const val in values) {
-    let replacement = values[val];
-    if (Array.isArray(replacement)) replacement = JSON.stringify(replacement);
-    if (typeof replacement === "object" && replacement !== null) replacement = replacement.toString();
-    stringToFormat = stringToFormat.replace(new RegExp(`{{${val}}}`, "g"), replacement);
-  }
-  return stringToFormat;
-}
-
-// src/RoleMembers/popout.html
+// src/plugins/RoleMembers/popout.html
 var popout_default = '<div class="theme-dark layer_cd0de5" style="z-index: 100">\n<div class="animatorBottom_f88ae3 translate_f88ae3 didRender_f88ae3 popout-role-members" style="margin-top: 0;">\n    <div class="container_ac201b selectFilterPopout_cfe282 elevationBorderHigh_ff8688 scroller_ac201b role-members-popout">\n        <div class="searchWithScrollbar_eef3ef container_c18ec9 medium_c18ec9">\n            <div class="inner_c18ec9">\n                <input class="input_c18ec9" placeholder="Search Members \u2014 {{memberCount}}" value="">\n                <div tabindex="0" class="iconLayout_c18ec9 medium_c18ec9" role="button">\n                    <div class="iconContainer_c18ec9">\n                        <svg name="Search" class="icon_c18ec9 visible_c18ec9" width="18" height="18" viewBox="0 0 18 18"><g fill="none" fill-rule="evenodd"><path fill="currentColor" d="M3.60091481,7.20297313 C3.60091481,5.20983419 5.20983419,3.60091481 7.20297313,3.60091481 C9.19611206,3.60091481 10.8050314,5.20983419 10.8050314,7.20297313 C10.8050314,9.19611206 9.19611206,10.8050314 7.20297313,10.8050314 C5.20983419,10.8050314 3.60091481,9.19611206 3.60091481,7.20297313 Z M12.0057176,10.8050314 L11.3733562,10.8050314 L11.1492281,10.5889079 C11.9336764,9.67638651 12.4059463,8.49170955 12.4059463,7.20297313 C12.4059463,4.32933105 10.0766152,2 7.20297313,2 C4.32933105,2 2,4.32933105 2,7.20297313 C2,10.0766152 4.32933105,12.4059463 7.20297313,12.4059463 C8.49170955,12.4059463 9.67638651,11.9336764 10.5889079,11.1492281 L10.8050314,11.3733562 L10.8050314,12.0057176 L14.8073185,16 L16,14.8073185 L12.2102538,11.0099776 L12.0057176,10.8050314 Z"></path></g></svg>\n                    </div>\n                </div>\n            </div>\n        </div>\n        <div>\n            <div class="list_eef3ef list_ac201b scroller_eef3ef thin_eed6a8 scrollerBase_eed6a8 role-members" dir="ltr" style="overflow: hidden scroll; padding-right: 0px; max-height: 400px;">\n                \n            </div>\n        </div>\n    </div>\n</div>\n</div>';
 
-// src/RoleMembers/item.html
+// src/plugins/RoleMembers/item.html
 var item_default = '<div class="item_eef3ef role-member">\n    <div class="itemCheckbox_eef3ef">\n        <div class="wrapper_c51b4e avatar_cfe282" role="img" aria-hidden="false" style="width: 32px; height: 32px;">\n            <svg width="40" height="32" viewBox="0 0 40 32" class="mask_c51b4e svg_c51b4e" aria-hidden="true">\n                <foreignObject x="0" y="0" width="32" height="32" mask="url(#svg-mask-avatar-default)">\n                        <div class="avatarStack_c51b4e">\n                            <img src="{{avatar_url}}" alt=" " class="avatar_c51b4e" aria-hidden="true">\n                        </div>\n                </foreignObject>\n            </svg>\n        </div>\n    </div>\n    <div class="itemLabel_eef3ef">\n        <span class="defaultColor_a595eb text-sm/normal_dc00ef username">{{username}}</span>\n    </div>\n</div>';
 
-// src/RoleMembers/index.ts
+// src/plugins/RoleMembers/index.ts
 var { DOM, ContextMenu, Patcher, Webpack, UI, Utils } = BdApi;
 var from = (arr) => arr && arr.length > 0 && Object.assign(...arr.map(([k, v]) => ({ [k]: v })));
 var filter = (obj, predicate) => from(Object.entries(obj).filter((o) => {
@@ -280,12 +294,13 @@ var RoleMembers = class extends Plugin {
       }
       const newOne = ContextMenu.buildItem({ type: "submenu", label: "Role Members", children: roleItems });
       const separatorIndex = retVal.props?.children?.findIndex((k) => !k?.props?.label);
-      const insertIndex = separatorIndex > 0 ? separatorIndex + 1 : 1;
+      const insertIndex = separatorIndex && separatorIndex > 0 ? separatorIndex + 1 : 1;
       retVal.props?.children?.splice(insertIndex, 0, newOne);
     });
   }
   showRolePopout(target, guildId, roleId) {
     const roles = getRoles({ id: guildId });
+    if (!roles) return;
     const role = roles[roleId];
     let members = GuildMemberStore.getMembers(guildId);
     if (guildId != roleId) members = members.filter((m) => m.roles.includes(role.id));
@@ -351,9 +366,6 @@ var RoleMembers = class extends Plugin {
       }
     };
     setTimeout(() => document.addEventListener("click", this.listener), 500);
-  }
-  getSettingsPanel() {
-    return this.buildSettingsPanel();
   }
 };
 

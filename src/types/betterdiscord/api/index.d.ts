@@ -1,3 +1,4 @@
+import React from "react";
 import {ContextMenu} from "./contextmenu";
 import {Data} from "./data";
 import {DOM} from "./dom";
@@ -18,5 +19,7 @@ export interface BetterDiscordAPI {
     Patcher: Patcher;
     ContextMenu: ContextMenu;
     DOM: DOM;
+
+    React: typeof React;
 }
 
