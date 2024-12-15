@@ -1,4 +1,4 @@
-import {ReactElement} from "react";
+import {ReactElement, ReactNode} from "react";
 import {Changelog} from "../manifest"; // TODO: move type here and have manifest import it
 
 
@@ -111,8 +111,19 @@ export interface ToastOptions {
     forceShow?: boolean;
 }
 
+export interface ConfirmationModalOptions {
+    danger?: boolean;
+    confirmText?: string;
+    cancelText?: string;
+    onConfirm?: () => void;
+    onCancel?: () => void;
+    onClose?: () => void;
+}
+
 export interface UI {
+    alert(title: string, content: ReactNode): void;
     showChangelogModal(options: Partial<Changelog>): void;
     buildSettingsPanel(options: Partial<PanelOptions>): ReactElement;
     showToast(content: string, options?: ToastOptions): void;
+    showConfirmationModal(title: string, content: ReactNode, options?: ConfirmationModalOptions): string;
 }

@@ -16,7 +16,7 @@ export interface FilterOptions {
 export interface Webpack {
     Filters: Filters;
     getModule<T>(filter: FilterFunction, options?: FilterOptions): T | undefined;
-    getByKeys<T>(...keys: string[]): T | undefined;
+    getByKeys<T>(...keys: string[] | [...string[], FilterOptions]): T | undefined;
     getByPrototypeKeys<T>(...keys: string[] | [...string[], FilterOptions]): T | undefined;
     getStore<T>(name: string): T | undefined;
 }
