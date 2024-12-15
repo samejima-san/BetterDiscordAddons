@@ -1,14 +1,13 @@
-import Plugin from "../base";
-import {Meta} from "../BetterDiscord/meta";
-import Config from "./config";
-import formatString from "../common/formatstring";
-
-// @ts-expect-error for some reason typescript isn't picking up the global ambient module declaration
-import popoutHTML from "./popout.html";
-
-// @ts-expect-error for some reason typescript isn't picking up the global ambient module declaration
-import itemHTML from "./item.html"; 
 import {SyntheticEvent} from "react";
+
+import {Meta} from "@betterdiscord/meta";
+
+import Plugin from "@common/plugin";
+import formatString from "@common/formatstring";
+
+import Config from "./config";
+import popoutHTML from "./popout.html";
+import itemHTML from "./item.html"; 
 
 
 const {DOM, ContextMenu, Patcher, Webpack, UI, Utils} = BdApi;
@@ -130,6 +129,7 @@ export default class RoleMembers extends Plugin {
 
     showRolePopout(target: HTMLElement, guildId: string, roleId: string) {
         const roles = getRoles({id: guildId});
+        if (!roles) return;
         const role = roles[roleId];
         let members = GuildMemberStore!.getMembers(guildId);
         if (guildId != roleId) members = members.filter(m => m.roles.includes(role.id));

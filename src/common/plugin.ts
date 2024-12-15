@@ -1,6 +1,6 @@
 import {ReactElement} from "react";
-import {Changelog, Manifest} from "./BetterDiscord/manifest.js";
-import {Meta} from "./BetterDiscord/meta.js";
+import {Changelog, Manifest} from "@betterdiscord/manifest";
+import {Meta} from "@betterdiscord/meta";
 
 
 interface Settings {

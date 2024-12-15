@@ -1,5 +1,5 @@
-import Plugin from "../base";
-import {Meta} from "../BetterDiscord/meta";
+import Plugin from "@common/plugin";
+import {Meta} from "@betterdiscord/meta";
 import Config from "./config";
 
 

@@ -1,6 +1,6 @@
 # How to Contribute
 
-Contributing for this repo is pretty laid back. All contributions should come from your own fork. Try to stick to the same style shown in the repo.
+Contributing for this repo is pretty laid back. All contributions should come from your own fork. Try to stick to the same style shown in the repo. Make your changes to the source files under `src` and not the built files under `Plugins`. Don't increment the version numbers without pre-approval.
 
 ## Contributor Agreement
 

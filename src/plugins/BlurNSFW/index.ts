@@ -1,13 +1,16 @@
-import Plugin from "../base";
-import {Meta} from "../BetterDiscord/meta";
+import {Component, ReactElement} from "react";
+
+import Plugin from "@common/plugin";
+import formatString from "@common/formatstring";
+
+import {Meta} from "@betterdiscord/meta";
+
+import {Channel} from "@discord";
+import {ClassModule, FluxStore} from "@discord/modules";
+
 import Config from "./config";
 
 import Events from "events";
-
-import formatString from "../common/formatstring";
-import {Component, ReactElement} from "react";
-import {ClassModule, FluxStore} from "../BetterDiscord/modules";
-import {Channel} from "../BetterDiscord/discord";
 
 
 const {ContextMenu, DOM, Webpack, Patcher} = BdApi;

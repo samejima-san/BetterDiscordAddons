@@ -1,5 +1,5 @@
 import {Meta} from "./meta";
-import {SettingsPanelDefinition} from "./ui";
+import {SettingsPanelDefinition} from "./api/ui";
 
 export interface Author {
     name: string;

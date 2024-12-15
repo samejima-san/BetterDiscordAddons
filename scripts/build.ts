@@ -19,7 +19,7 @@ const bdFolder = (process.platform == "win32" ? windows : process.platform == "d
 
 // Setup input and output bases
 const projectRoot = path.dirname(process.env.npm_package_json ?? "..");
-const pluginsPath = path.join(projectRoot, "src");
+const pluginsPath = path.join(projectRoot, "src", "plugins");
 const releasePath = path.join(projectRoot, "Plugins", pluginName);
 const releaseFile = path.join(releasePath, `${pluginName}.plugin.js`);
 if (!fs.existsSync(pluginsPath)) fs.mkdirSync(pluginsPath, {recursive: true});

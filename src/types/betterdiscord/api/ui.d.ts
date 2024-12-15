@@ -1,5 +1,5 @@
 import {ReactElement} from "react";
-import {Changelog} from "./manifest";
+import {Changelog} from "../manifest"; // TODO: move type here and have manifest import it
 
 
 export type HexString = `#${string}`;

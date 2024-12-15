@@ -8,7 +8,15 @@
         "strictNullChecks": true,
         "target": "ESNext",
         "moduleResolution": "bundler",
-        "rootDir": "."
+        "rootDir": ".",
+        // "typeRoots": ["node_modules/@types", "src/types/global.d.ts"],
+        "paths": {
+            "@betterdiscord": ["./src/types/betterdiscord"],
+            "@betterdiscord/*": ["./src/types/betterdiscord/*"],
+            "@discord": ["./src/types/discord"],
+            "@discord/*": ["./src/types/discord/*"],
+            "@common/*": ["./src/common/*"]
+        }
     },
     "include": ["src/*", "src/**/*"]
 }
