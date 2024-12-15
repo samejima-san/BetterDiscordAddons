@@ -32,6 +32,31 @@
 
 @else@*/
 
+var __defProp = Object.defineProperty;
+var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+var __getOwnPropNames = Object.getOwnPropertyNames;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __export = (target, all) => {
+  for (var name in all)
+    __defProp(target, name, { get: all[name], enumerable: true });
+};
+var __copyProps = (to, from, except, desc) => {
+  if (from && typeof from === "object" || typeof from === "function") {
+    for (let key of __getOwnPropNames(from))
+      if (!__hasOwnProp.call(to, key) && key !== except)
+        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+  }
+  return to;
+};
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+
+// src/plugins/DoNotTrack/index.ts
+var DoNotTrack_exports = {};
+__export(DoNotTrack_exports, {
+  default: () => DoNotTrack
+});
+module.exports = __toCommonJS(DoNotTrack_exports);
+
 // src/common/plugin.ts
 var Plugin = class {
   meta;
@@ -186,7 +211,7 @@ var SettingsManager = Webpack.getModule((m) => m?.updateAsync && m?.type === 1, 
 var BoolSetting = Webpack.getModule((m) => m?.typeName?.includes("Bool"), { searchExports: true });
 var Analytics = Webpack.getByKeys("AnalyticEventConfigs");
 var NativeModule = Webpack.getByKeys("getDiscordUtils");
-module.exports = class DoNotTrack extends Plugin {
+var DoNotTrack = class extends Plugin {
   constructor(meta) {
     super(meta, config_default);
   }

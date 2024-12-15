@@ -11,7 +11,7 @@ const BoolSetting = Webpack.getModule<{create(opt: {value: boolean}): object}>(m
 const Analytics = Webpack.getByKeys<{default: {track(): void}}>("AnalyticEventConfigs");
 const NativeModule = Webpack.getByKeys<{ensureModule(): void, getDiscordUtils(): {setObservedGamesCallback(l: string[], fn: CallableFunction): void}}>("getDiscordUtils");
 
-module.exports = class DoNotTrack extends Plugin {
+export default class DoNotTrack extends Plugin {
     constructor(meta: Meta) {
         super(meta, Config);
     }

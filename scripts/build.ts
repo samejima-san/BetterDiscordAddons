@@ -99,7 +99,8 @@ async function buildPlugin() {
         logLevel: "info",
         metafile: true,
         minify: false,
-        plugins: [copyToBDPlugin]
+        plugins: [copyToBDPlugin],
+        treeShaking: true,
     });
 
     await ctx.rebuild();
