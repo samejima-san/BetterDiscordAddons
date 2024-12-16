@@ -20,7 +20,7 @@ export interface Webpack {
     getModule<T>(filter: FilterFunction, options?: FilterOptions): T | undefined;
     getByKeys<T>(...keys: string[] | [...string[], FilterOptions]): T | undefined;
     getByPrototypeKeys<T>(...keys: string[] | [...string[], FilterOptions]): T | undefined;
-    getStore<T extends FluxStore>(name: string): T | undefined;
+    getStore<T>(name: string): T & FluxStore | undefined;
 }
 
 export interface Filters {

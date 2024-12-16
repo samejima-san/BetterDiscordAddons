@@ -7,6 +7,7 @@ import {Patcher} from "./patcher";
 import {UI} from "./ui";
 import {Utils} from "./utils";
 import {Webpack} from "./webpack";
+import {ReactUtils} from "./reactutils";
 
 export interface BetterDiscordAPI {
     version: string;
@@ -19,6 +20,7 @@ export interface BetterDiscordAPI {
     Patcher: Patcher;
     ContextMenu: ContextMenu;
     DOM: DOM;
+    ReactUtils: ReactUtils;
 
     React: typeof React;
 }

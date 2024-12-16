@@ -8,7 +8,7 @@ interface SettingItem<T> {
     type: "dropdown" | "number" | "switch" | "text" | "slider" | "radio" | "keybind" | "color" | "file" | "custom";
     id: string;
     name: string;
-    note: string;
+    note?: string;
     value: T;
     children?: ReactElement[];
     onChange?(value: T): void;
@@ -120,10 +120,33 @@ export interface ConfirmationModalOptions {
     onClose?: () => void;
 }
 
+export interface TooltipOptions {
+    style?: "primary" | "info" | "success" | "warn" | "danger";
+    side?: "top" | "right" | "bottom" | "left";
+    preventFlip?: boolean;
+    disabled?: boolean;
+}
+
+export interface Tooltip<T extends Node = Node> {
+    active: boolean;
+    disabled: boolean;
+    element: HTMLElement;
+    label: string | HTMLElement;
+    labelElement: HTMLElement;
+    node: T;
+    preventFlip: boolean;
+    side: "top" | "right" | "bottom" | "left";
+    style: "primary" | "info" | "success" | "warn" | "danger";
+    tooltipElement: HTMLElement;
+    show(): void;
+    hide(): void;
+}
+
 export interface UI {
     alert(title: string, content: ReactNode): void;
     showChangelogModal(options: Partial<Changelog>): void;
     buildSettingsPanel(options: Partial<PanelOptions>): ReactElement;
     showToast(content: string, options?: ToastOptions): void;
     showConfirmationModal(title: string, content: ReactNode, options?: ConfirmationModalOptions): string;
+    createTooltip<T extends Node = HTMLElement>(target: T, content: string | HTMLElement, options?: TooltipOptions): Tooltip<T>;
 }

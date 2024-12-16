@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     bold: {type: "native-format",
             name: "Bold",
             displayName: "<b>Bold</b>",

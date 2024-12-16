@@ -1,1 +1,2 @@
 *.plugin.js linguist-generated
+eslint.config.js -linguist-detectable

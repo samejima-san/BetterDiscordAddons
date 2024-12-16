@@ -5,14 +5,14 @@ import {Meta} from "@betterdiscord/meta";
 import {Channel, Message, User} from "@discord";
 
 import Config from "./config";
-import {Dispatcher as IDispatcher, FluxStore} from "@discord/modules";
+import {Dispatcher as IDispatcher} from "@discord/modules";
 
 
 const {Logger, Patcher, Webpack} = BdApi;
 
-const MessageStore = Webpack.getStore<{getMessage(cid: string, id: string): Message} & FluxStore>("MessageStore");
-const UserStore = Webpack.getStore<{getUser(id: string): User} & FluxStore>("UserStore");
-const ChannelStore = Webpack.getStore<{getChannel(id: string): Channel} & FluxStore>("ChannelStore");
+const MessageStore = Webpack.getStore<{getMessage(cid: string, id: string): Message}>("MessageStore");
+const UserStore = Webpack.getStore<{getUser(id: string): User}>("UserStore");
+const ChannelStore = Webpack.getStore<{getChannel(id: string): Channel}>("ChannelStore");
 const ImageResolver = Webpack.getByKeys<{getUserAvatarURL(u: User): string;}>("getUserAvatarURL", "getGuildIconURL");
 const Dispatcher = Webpack.getByKeys<IDispatcher>("dispatch", "subscribe");
 

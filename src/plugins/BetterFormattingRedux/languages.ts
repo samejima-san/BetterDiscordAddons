@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     A: {ada: "Ada", awk: "Awk"},
     B: {bash: "Bash"},
     C: {c: "c", clj: "Clojure", coffeescript: "CoffeeScript", cpp: "C++", crystal: "Crystal", csharp: "C#", css: "CSS"},

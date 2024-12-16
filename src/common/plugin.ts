@@ -16,6 +16,7 @@ export default class Plugin {
     onStop?(): void;
     LocaleManager?: {getLocale(): string};
     getSettingsPanel?(): ReactElement;
+    observer?(mutation: MutationRecord): void;
 
     get strings() {
         if (!this.manifest.strings) return {};
