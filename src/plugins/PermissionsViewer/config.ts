@@ -9,13 +9,30 @@ const manifest: Manifest = {
             github_username: "zerebos",
             twitter_username: "IAmZerebos"
         }],
-        version: "0.2.11",
+        version: "0.3.0",
         description: "Allows you to view a user's permissions. Thanks to Noodlebox for the idea!",
         github: "https://github.com/zerebos/BetterDiscordAddons/tree/master/Plugins/PermissionsViewer",
         github_raw: "https://raw.githubusercontent.com/zerebos/BetterDiscordAddons/master/Plugins/PermissionsViewer/PermissionsViewer.plugin.js"
     },
     changelog: [
-        {title: "Fixes", type: "fixed", items: ["Quick fix for displaying permissions in user popouts!"]}
+        {
+            title: "What's New?",
+            type: "added",
+            items: [
+                "Plugin no longer depends on ZeresPluginLibrary!",
+                "Popout permissions updated to match Discord's new style."
+            ]
+        },
+        {
+            title: "Fixes",
+            type: "fixed",
+            items: [
+                "The main startup error has finally been fixed!",
+                "Fixed an issue where localization wouldn't process correctly.",
+                "Permissions should now show properly on the new user popouts.",
+                "Modals should now close when pressing Escape."
+            ]
+        }
     ],
     config: [
         {

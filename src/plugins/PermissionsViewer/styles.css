@@ -23,7 +23,7 @@
 .member-perms .member-perm .perm-circle {
     border-radius: 50%;
     height: 12px;
-    margin-right: 4px;
+    margin: 0 8px 0 5px;
     width: 12px;
 }
 

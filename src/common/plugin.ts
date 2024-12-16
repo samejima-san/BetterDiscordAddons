@@ -14,13 +14,13 @@ export default class Plugin {
     defaultSettings: Settings;
     onStart?(): void;
     onStop?(): void;
-    LocaleManager?: {getLocale(): string};
+    LocaleManager?: {locale: string};
     getSettingsPanel?(): ReactElement;
     observer?(mutation: MutationRecord): void;
 
     get strings() {
         if (!this.manifest.strings) return {};
-        const locale = this.LocaleManager?.getLocale().split("-")[0] ?? "en";
+        const locale = this.LocaleManager?.locale.split("-")[0] ?? "en";
         if (this.manifest.strings.hasOwnProperty(locale)) return this.manifest.strings[locale];
         if (this.manifest.strings.hasOwnProperty("en")) return this.manifest.strings.en;
         return this.manifest.strings;
@@ -58,7 +58,7 @@ export default class Plugin {
         }
 
         // Only grab the localemanager for plugins that have string localization
-        if (this.manifest.strings) this.LocaleManager = BdApi.Webpack.getModule(m => m?.Messages && Object.keys(m?.Messages).length > 0);
+        if (this.manifest.strings) this.LocaleManager = BdApi.Webpack.getByKeys("locale", "initialize");
 
         // Automatically build settings panel if config found
         if (this.manifest.config && !this.getSettingsPanel) {
