@@ -127,3 +127,61 @@ export interface GuildChannel extends Channel {
     type: 0;
     version: number;
 }
+
+
+export interface Message {
+    activity: null;
+    activityInstance: null;
+    application: null;
+    applicationId: null;
+    attachments: [];
+    author: User;
+    blocked: boolean;
+    bot: boolean;
+    call: null;
+    changelogId: null;
+    channel_id: string;
+    codedLinks: [];
+    colorString: undefined;
+    components: [];
+    content: string;
+    customRenderedContent: undefined;
+    editedTimestamp: null;
+    embeds: [];
+    flags: 0;
+    giftCodes: [];
+    giftInfo: undefined;
+    giftingPrompt: null;
+    id: string;
+    ignored: boolean;
+    interaction: null;
+    interactionData: null;
+    interactionError: null;
+    interactionMetadata: null;
+    isSearchHit: boolean;
+    isUnsupported: boolean;
+    loggingName: null;
+    mentionChannels: [];
+    mentionEveryone: boolean;
+    mentionRoles: [];
+    mentioned: boolean;
+    mentions: [];
+    messageReference: null;
+    messageSnapshots: [];
+    nick: undefined;
+    nonce: string;
+    pinned: boolean;
+    poll: undefined;
+    purchaseNotification: undefined;
+    reactions: [];
+    referralTrialOfferId: null;
+    roleSubscriptionData: undefined;
+    soundboardSounds: undefined;
+    state: "SENT";
+    stickerItems: [];
+    stickers: [];
+    timestamp: Date;
+    tts: boolean;
+    type: 0;
+    webhookId: null;
+}

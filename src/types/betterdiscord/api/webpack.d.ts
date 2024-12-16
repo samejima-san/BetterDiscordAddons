@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import {FluxStore} from "@discord/modules";
+
 export interface Module {
     id: number;
     loaded: true;
@@ -18,7 +20,7 @@ export interface Webpack {
     getModule<T>(filter: FilterFunction, options?: FilterOptions): T | undefined;
     getByKeys<T>(...keys: string[] | [...string[], FilterOptions]): T | undefined;
     getByPrototypeKeys<T>(...keys: string[] | [...string[], FilterOptions]): T | undefined;
-    getStore<T>(name: string): T | undefined;
+    getStore<T extends FluxStore>(name: string): T | undefined;
 }
 
 export interface Filters {

@@ -1,1 +1,1 @@
-Plugins/**/*.js -linguist-detectable
+*.plugin.js linguist-generated
