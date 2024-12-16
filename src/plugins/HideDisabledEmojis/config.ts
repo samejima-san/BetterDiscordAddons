@@ -1,0 +1,31 @@
+import {Manifest} from "@betterdiscord/manifest";
+
+const manifest: Manifest = {
+    info: {
+        name: "HideDisabledEmojis",
+        authors: [{
+            name: "Zerebos",
+            discord_id: "249746236008169473",
+            github_username: "zerebos",
+            twitter_username: "IAmZerebos"
+        }],
+        version: "0.0.9",
+        description: "Hides disabled emojis from the emoji picker.",
+        github: "https://github.com/zerebos/BetterDiscordAddons/tree/master/Plugins/HideDisabledEmojis",
+        github_raw: "https://github.com/zerebos/BetterDiscordAddons/blob/master/Plugins/HideDisabledEmojis/HideDisabledEmojis.plugin.js"
+    },
+    changelog: [
+        {
+            title: "Bugs Squashed",
+            type: "fixed",
+            items: [
+                "Hides emojis in normal picker once again!",
+                "Hides emojis in the status emoji picker.",
+                "Hides extra unrelated buttons in status emoji picker."
+            ]
+        }
+    ],
+    main: "index.ts"
+};
+
+export default manifest;

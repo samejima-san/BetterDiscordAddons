@@ -1,3 +1,5 @@
+import {ForwardRefExoticComponent, MemoExoticComponent, JSX} from "react";
+
 export type ClassModule = Record<string, string>;
 
 
@@ -22,3 +24,5 @@ export interface FluxStore {
     _dispatchToken: string;
     _isInitialized: boolean;
 }
+
+export type Memo = MemoExoticComponent<ForwardRefExoticComponent<null> & JSX.ElementClass>;

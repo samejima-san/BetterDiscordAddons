@@ -15,12 +15,17 @@ export interface FilterOptions {
     searchExports?: boolean;
 }
 
+export interface WithKeyOptions extends FilterOptions {
+    target?: any;
+}
+
 export interface Webpack {
     Filters: Filters;
     getModule<T>(filter: FilterFunction, options?: FilterOptions): T | undefined;
     getByKeys<T>(...keys: string[] | [...string[], FilterOptions]): T | undefined;
     getByPrototypeKeys<T>(...keys: string[] | [...string[], FilterOptions]): T | undefined;
     getStore<T>(name: string): T & FluxStore | undefined;
+    getWithKey<T = any>(filter: FilterFunction, options?: WithKeyOptions): [T, string];
 }
 
 export interface Filters {
