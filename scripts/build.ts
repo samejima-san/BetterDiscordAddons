@@ -95,7 +95,7 @@ async function buildPlugin() {
         format: "cjs",
         target: ["chrome128"],
         external: ["events"],
-        loader: {".css": "text", ".html": "text"},
+        loader: {".css": "text", ".html": "text", ".svg": "text"},
         logLevel: "info",
         metafile: true,
         minify: false,

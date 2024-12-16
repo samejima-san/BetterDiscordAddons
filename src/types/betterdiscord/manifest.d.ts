@@ -40,7 +40,7 @@ export interface Changelog {
 
 
 export interface Localization {
-    [locale: string]: Record<string, string>;
+    [locale: string]: Record<string, string | Record<string, string | Record<string, string>>>;
 }
 
 export interface Manifest {
