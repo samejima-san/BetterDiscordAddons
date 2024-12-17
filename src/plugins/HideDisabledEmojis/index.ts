@@ -7,6 +7,7 @@ import {Meta} from "@betterdiscord/meta";
 import {Memo} from "@discord/modules";
 
 import Config from "./config";
+import {Channel, Guild} from "@discord";
 
 
 const {Patcher, Webpack, Logger, Utils} = BdApi;
@@ -47,7 +48,7 @@ export default class HideDisabledEmojis extends Plugin {
 
         interface RowProps {
             rowCountBySection: number[];
-            sectionDescriptors: {count: number, sectionId: string}[];
+            sectionDescriptors: {count: number, sectionId: string; isNitroLocked: boolean;}[];
             collapsedSections: Set<string>;
             emojiGrid: Emoji[][] & {filtered?: boolean};
         }
@@ -57,7 +58,7 @@ export default class HideDisabledEmojis extends Plugin {
             props.sectionDescriptors = props.sectionDescriptors.filter(s => s.count || props.collapsedSections.has(s.sectionId));
             
             const wasFiltered = props.emojiGrid.filtered;
-            props.emojiGrid = props.emojiGrid.filter(r => r.length);
+            props.emojiGrid = props.emojiGrid.filter(r => r.length > 0);
             if (wasFiltered) props.emojiGrid.filtered = true; // Reassign
         };
 
@@ -83,7 +84,13 @@ export default class HideDisabledEmojis extends Plugin {
                     let rowsLeft = 0;
                     for (let r = row; r <= rowEnd; r++) {
                         // If it's not disabled or if it's the upload button in status picker
-                        props.emojiGrid[r] = props.emojiGrid[r].filter(e => !e.isDisabled && (e.type !== 1 || inputProps?.pickerIntention !== 1));
+                        props.emojiGrid[r] = props.emojiGrid[r].filter(e => {
+                            const hasDisabled = Object.hasOwn(e, "isDisabled");
+                            const isDisabled = !e.isDisabled;
+                            const typeCheck = e.type !== 1;
+                            const pickerCheck = inputProps?.pickerIntention !== 1;
+                            return hasDisabled && isDisabled && (typeCheck || pickerCheck);
+                        });
                         const remaining = props.emojiGrid[r].length;
                         if (remaining) {
                             rowsLeft = rowsLeft + 1;
@@ -99,6 +106,21 @@ export default class HideDisabledEmojis extends Plugin {
                 doFiltering(props);
             });
             pickerChild.type.type.__patched = true;
+        });
+
+        interface Category {
+            emojis?: Emoji[];
+            emojisDisabled: Set<string>;
+            id?: string;
+            isNitroLocked: boolean;
+            name?: string;
+            type: string;
+            guild?: Guild;
+        }
+
+        const [catModule, catKey] = BdApi.Webpack.getWithKey(BdApi.Webpack.Filters.byStrings("useEmojiCategories"));
+        Patcher.after(this.meta.name, catModule, catKey, (_, [intention, channel]: [number, Channel], ret: Category[]) => {
+            return ret.filter(c => c.type !== "GUILD" || (!c.isNitroLocked && c.emojis?.some(e => !EmojiInfo.isEmojiFiltered({emoji: e, channel: channel, intention: intention}))));
         });
     }
     

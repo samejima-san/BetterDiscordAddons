@@ -28,7 +28,7 @@ export interface FluxStore {
 export type Memo = MemoExoticComponent<ForwardRefExoticComponent<null> & JSX.ElementClass>;
 
 
-export interface Permissions {
+export interface DiscordPermissions {
     ADD_REACTIONS: 64n;
     ADMINISTRATOR: 8n;
     ATTACH_FILES: 32768n;

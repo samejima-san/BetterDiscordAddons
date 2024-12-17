@@ -203,7 +203,8 @@ var manifest = {
       items: [
         "The main startup error has finally been fixed!",
         "Fixed an issue where localization wouldn't process correctly.",
-        "Permissions should now show properly on the new user popouts."
+        "Permissions should now show properly on the new user popouts.",
+        "Modals should now close when pressing Escape."
       ]
     }
   ],

@@ -9,19 +9,26 @@ const manifest: Manifest = {
             github_username: "zerebos",
             twitter_username: "IAmZerebos"
         }],
-        version: "0.0.9",
+        version: "0.1.0",
         description: "Hides disabled emojis from the emoji picker.",
         github: "https://github.com/zerebos/BetterDiscordAddons/tree/master/Plugins/HideDisabledEmojis",
         github_raw: "https://github.com/zerebos/BetterDiscordAddons/blob/master/Plugins/HideDisabledEmojis/HideDisabledEmojis.plugin.js"
     },
     changelog: [
         {
+            title: "What's New?",
+            type: "added",
+            items: [
+                "No longer dependent on ZeresPluginLibrary!",
+            ]
+        },
+        {
             title: "Bugs Squashed",
             type: "fixed",
             items: [
-                "Hides emojis in normal picker once again!",
-                "Hides emojis in the status emoji picker.",
-                "Hides extra unrelated buttons in status emoji picker."
+                "Correctly hides emojis in the picker.",
+                "Also hides categories in the sidebar that have no emojis available to be used.",
+                "Hides other nitro promo in the emoji picker."
             ]
         }
     ],
